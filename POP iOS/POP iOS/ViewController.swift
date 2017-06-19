@@ -12,8 +12,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let request = UserRequest(name: "Lawrence")
-        request.send { (user) in
+        URLSessionClient().send(UserRequest(name: "Lawrence")) { (user) in
             if let user = user {
                 print("\(user.message) from \(user.name)")
             }

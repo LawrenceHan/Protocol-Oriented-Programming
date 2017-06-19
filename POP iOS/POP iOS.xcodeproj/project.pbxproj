@@ -15,6 +15,8 @@
 		023B3F301EF3DEDA00FAB1AB /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023B3F2D1EF3DEDA00FAB1AB /* Request.swift */; };
 		023B3F311EF3DEDA00FAB1AB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023B3F2E1EF3DEDA00FAB1AB /* User.swift */; };
 		023B3F321EF3DEDA00FAB1AB /* UserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023B3F2F1EF3DEDA00FAB1AB /* UserRequest.swift */; };
+		023B3F341EF76EB300FAB1AB /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023B3F331EF76EB300FAB1AB /* Client.swift */; };
+		023B3F361EF7771000FAB1AB /* Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023B3F351EF7771000FAB1AB /* Decodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		023B3F2D1EF3DEDA00FAB1AB /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		023B3F2E1EF3DEDA00FAB1AB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		023B3F2F1EF3DEDA00FAB1AB /* UserRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRequest.swift; sourceTree = "<group>"; };
+		023B3F331EF76EB300FAB1AB /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		023B3F351EF7771000FAB1AB /* Decodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Decodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 			isa = PBXGroup;
 			children = (
 				023B3F2D1EF3DEDA00FAB1AB /* Request.swift */,
+				023B3F331EF76EB300FAB1AB /* Client.swift */,
+				023B3F351EF7771000FAB1AB /* Decodable.swift */,
 				023B3F2E1EF3DEDA00FAB1AB /* User.swift */,
 				023B3F2F1EF3DEDA00FAB1AB /* UserRequest.swift */,
 				023B3F1B1EF3DEBD00FAB1AB /* AppDelegate.swift */,
@@ -148,6 +154,8 @@
 			files = (
 				023B3F311EF3DEDA00FAB1AB /* User.swift in Sources */,
 				023B3F1E1EF3DEBD00FAB1AB /* ViewController.swift in Sources */,
+				023B3F341EF76EB300FAB1AB /* Client.swift in Sources */,
+				023B3F361EF7771000FAB1AB /* Decodable.swift in Sources */,
 				023B3F301EF3DEDA00FAB1AB /* Request.swift in Sources */,
 				023B3F321EF3DEDA00FAB1AB /* UserRequest.swift in Sources */,
 				023B3F1C1EF3DEBD00FAB1AB /* AppDelegate.swift in Sources */,

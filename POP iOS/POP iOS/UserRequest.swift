@@ -8,10 +8,14 @@
 
 import Foundation
 
+extension User: Decodable {
+    static func parse(data: Data) -> User? {
+        return User(data: data)
+    }
+}
+
 struct UserRequest: Request {
     let name: String
-    
-    let host: String = "https://api.onevcat.com"
     var path: String {
         return "/users/\(name)"
     }
@@ -19,7 +23,4 @@ struct UserRequest: Request {
     let parameter: [String: Any] = [:]
     
     typealias Response = User
-    func parse(data: Data) -> User? {
-        return User(data: data)
-    }
 }
