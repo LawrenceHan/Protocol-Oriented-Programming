@@ -10,10 +10,4 @@ import Foundation
 
 print("Hello, World!")
 
-let request = UserRequest(name: "Lawrence")
-request.send { (user) in
-    if let user = user {
-        print("\(user.message) from \(user.name)")
-    }
-}
 
