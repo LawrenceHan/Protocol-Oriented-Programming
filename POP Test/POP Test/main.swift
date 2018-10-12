@@ -53,32 +53,32 @@ struct FibsIterator: IteratorProtocol {
     }
 }
 
-struct PrefixIterator: IteratorProtocol {
-    let string: String
-    var offset: String.Index
+struct PrefixIterator<Base: Collection>: IteratorProtocol, Sequence {
+    let base: Base
+    var offset: Base.Index
     
-    init(string: String) {
-        self.string = string
-        offset = string.startIndex
+    init(_ base: Base) {
+        self.base = base
+        self.offset = base.startIndex
     }
     
-    mutating func next() -> Substring? {
-        guard offset < string.endIndex else { return nil }
-        offset = string.index(after: offset)
-        return string[..<offset]
+    mutating func next() -> Base.SubSequence? {
+        guard offset < base.endIndex else { return nil }
+        base.formIndex(after: &offset)
+        return base.prefix(upTo: offset)
     }
 }
 
-struct PrefixSequence: Sequence {
-    let string: String
-    func makeIterator() -> PrefixIterator {
-        return PrefixIterator(string: string)
-    }
-}
+//struct PrefixSequence: Sequence {
+//    let string: String
+//    func makeIterator() -> PrefixIterator {
+//        return PrefixIterator(string)
+//    }
+//}
 
-for prefix in PrefixSequence(string: "HelloWorld") {
-    print(prefix)
-}
+//for prefix in PrefixSequence(string: "HelloWorld") {
+//    print(prefix)
+//}
 
 func fibsIterator() -> AnyIterator<Int> {
     var state = (0, 1)
@@ -91,7 +91,7 @@ func fibsIterator() -> AnyIterator<Int> {
 
 let fibsSequence = AnySequence(fibsIterator)
 
-print(Array(fibsSequence.prefix(10)))
+print(Array(fibsSequence.prefix(8)))
 
 let standardIn = AnySequence {
     return AnyIterator {
@@ -155,7 +155,117 @@ extension List: IteratorProtocol, Sequence {
     }
 }
 
-let list: List = [1,2,3]
-for x in list {
-    print("\(x)", terminator: "")
+//let list: List = [1,2,3]
+//for x in list {
+//    print("\(x)", terminator: "")
+//}
+
+protocol Queue {
+    associatedtype Element
+    mutating func enqueue(_ newElement: Element)
+    mutating func dequeue() -> Element?
 }
+
+struct FIFOQueue<Element>: Queue {
+    var left: [Element] = []
+    var right: [Element] = []
+    
+    mutating func enqueue(_ newElement: Element) {
+        right.append(newElement)
+    }
+    
+    mutating func dequeue() -> Element? {
+        if left.isEmpty {
+            left = right.reversed()
+            right.removeAll()
+        }
+        return left.popLast()
+    }
+}
+
+extension FIFOQueue: Collection {
+    var startIndex: Int { return 0 }
+    var endIndex: Int { return left.count+right.count }
+    
+    func index(after i: Int) -> Int {
+        precondition(i<endIndex)
+        return i+1
+    }
+    
+    subscript(position: Int) -> Element {
+        precondition((0..<endIndex).contains(position), "Index out of bounds")
+        if position < left.endIndex {
+            return left[left.count-position-1]
+        } else {
+            return right[position-left.count]
+        }
+    }
+}
+
+extension FIFOQueue: ExpressibleByArrayLiteral {
+    init(arrayLiteral elements: Element...) {
+        left = elements.reversed()
+        right = []
+    }
+}
+
+extension Substring {
+    var nextWordRange: Range<Index> {
+        let start = drop(while: { $0 == " "})
+        let end = start.index(where: { $0 == " "}) ?? endIndex
+        return start.startIndex..<end
+    }
+}
+
+struct WordsIndex: Comparable {
+    fileprivate let range: Range<Substring.Index>
+    fileprivate init(_ value: Range<Substring.Index>) {
+        self.range = value
+    }
+    
+    static func <(lhs: WordsIndex, rhs: WordsIndex) -> Bool {
+        return lhs.range.lowerBound < rhs.range.lowerBound
+    }
+    
+    static func ==(lhs: WordsIndex, rhs: WordsIndex) -> Bool {
+        return lhs.range == rhs.range
+    }
+}
+
+struct Words: Collection {
+    let string: Substring
+    let startIndex: WordsIndex
+    
+    init(_ s: String) {
+        self.init(s[...])
+    }
+    
+    private init(_ s: Substring) {
+        self.string = s
+        self.startIndex = WordsIndex(string.nextWordRange)
+    }
+    
+    var endIndex: WordsIndex {
+        let e = string.endIndex
+        return WordsIndex(e..<e)
+    }
+    
+    subscript(index: WordsIndex) -> Substring {
+        return string[index.range]
+    }
+    
+    func index(after i: WordsIndex) -> WordsIndex {
+        guard i.range.upperBound < string.endIndex else { return endIndex }
+        let remainder = string[i.range.upperBound...]
+        return WordsIndex(remainder.nextWordRange)
+    }
+    
+    subscript(range: Range<WordsIndex>) -> Words {
+        let start = range.lowerBound.range.lowerBound
+        let end = range.upperBound.range.upperBound
+        return Words(string[start..<end])
+    }
+}
+
+let array = Words(" hello world test ")
+print(Array(array.prefix(2)))
